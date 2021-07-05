@@ -38,6 +38,7 @@ router.post(
 
       if (user) {
         // checking if the user exists
+        return
         res.status(400).json({ errors: [{ msg: "User already exists" }] });
       }
 
@@ -47,7 +48,7 @@ router.post(
         d: "mm", //default img user icon
       });
 
-      user: new User({
+      user= new User({
         //instance of a user from the let user.
         name,
         email,
