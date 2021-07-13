@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const { check, validationResult } = require("express-validator"); //mirar doc de express-validator github
 
 const User = require("../../models/User");
@@ -38,7 +40,7 @@ router.post(
 
       if (user) {
         // checking if the user exists
-        return
+        return;
         res.status(400).json({ errors: [{ msg: "User already exists" }] });
       }
 
@@ -48,7 +50,7 @@ router.post(
         d: "mm", //default img user icon
       });
 
-      user= new User({
+      user = new User({
         //instance of a user from the let user.
         name,
         email,
@@ -62,7 +64,23 @@ router.post(
       user.password = await bcrypt.hash(password, salt); //plain txt pass + salt.
 
       await user.save(); // saving the user to the Data base, todo lo que retorne una promesa (debe usarse await)
-      res.send("User registered");
+
+      //res.send("User registered"); instead we use :
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+      // we sign the token :
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token }); // obtendremos el token como respuesta del servidor, luego de registrar al user.
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
