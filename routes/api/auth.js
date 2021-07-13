@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const config = require("config");
-const bycrypt = require('bcryptjs')
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator"); //mirar doc de express-validator github
 
 const User = require("../../models/User");
@@ -50,12 +51,20 @@ router.post(
 
       if (!user) {
         // checking if the user exists
-        return;
-        res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
 
+      // necesitamos aseguarnos que el pass match al user , traemos bycrypt:
 
+      const isMatch = await bcrypt.compare(password, user.password);
 
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
+      }
       const payload = {
         user: {
           id: user.id,
