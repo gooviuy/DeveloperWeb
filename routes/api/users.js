@@ -78,7 +78,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ token }); // obtendremos el token como respuesta del servidor, luego de registrar al user.
+          res.json({ token }); // obtendremos el token como respuesta del servidor, luego de registrar al
         }
       );
     } catch (err) {
