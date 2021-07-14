@@ -4,9 +4,11 @@ const auth = require("../../middleware/auth");
 const { check, validationResult,} = require("express-validator");
 
 const checkObjectId = require('../../middleware/checkObjectId');
+// bring in normalize to give us a proper url, regardless of what user entered
 const normalize = require('normalize-url');
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Post = require('../../models/Post');
 
 // add @route  GET api/Profile ///me
 //@description Test route /// Get current users profile
@@ -138,6 +140,27 @@ router.get(
       }
     }
   );
+
+  // @route    DELETE api/profile
+// @desc     Delete profile, user & posts
+// @access   Private
+router.delete('/', auth, async (req, res) => {
+    try {
+      // Remove user posts
+      // Remove profile
+      // Remove user
+      await Promise.all([
+        Post.deleteMany({ user: req.user.id }),
+        Profile.findOneAndRemove({ user: req.user.id }),
+        User.findOneAndRemove({ _id: req.user.id })
+      ]);
+  
+      res.json({ msg: 'User deleted' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
 
 
 
