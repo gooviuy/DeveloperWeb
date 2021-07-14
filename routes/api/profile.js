@@ -47,6 +47,33 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
+ // destructure the request
+ const {
+    website,
+    skills,
+    youtube,
+    twitter,
+    instagram,
+    linkedin,
+    facebook,
+    // spread the rest of the fields we don't need to check
+    ...rest
+  } = req.body;
+
+   // build a profile
+   const profileFields = {
+    user: req.user.id,
+    website:
+      website && website !== ''
+        ? normalize(website, { forceHttps: true })
+        : '',
+    skills: Array.isArray(skills)
+      ? skills
+      : skills.split(',').map((skill) => ' ' + skill.trim()),
+    ...rest
+  };
+
   }
 );
 
