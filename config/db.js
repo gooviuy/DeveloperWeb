@@ -15,7 +15,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-    }); // lo utilizamos para quitar el warning "deprecationWarning"
+    }); // lo utilizamos para quitar el warning "deprecationWarning", ++.
     console.log("MongoDB Connected...");
   } catch (err) {
     console.log(err.message);
