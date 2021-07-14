@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult,} = require("express-validator");
 
+const checkObjectId = require('../../middleware/checkObjectId');
 const normalize = require('normalize-url');
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
@@ -106,6 +107,7 @@ router.post(
 // @access   Public
 router.get('/', async (req, res) => {
     try {
+        // populate implica que podamos obtener esos datos desde user model para mostrar el perfil :
       const profiles = await Profile.find().populate('user', ['name', 'avatar']);
       res.json(profiles);
     } catch (err) {
@@ -117,6 +119,7 @@ router.get('/', async (req, res) => {
   // @route    GET api/profile/user/:user_id
 // @desc     Get profile by user ID
 // @access   Public
+
 router.get(
     '/user/:user_id',
     checkObjectId('user_id'),
@@ -135,6 +138,7 @@ router.get(
       }
     }
   );
+
 
 
 module.exports = router;
