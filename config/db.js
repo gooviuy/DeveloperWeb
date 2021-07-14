@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 
+
 const config = require("config"); // para obtener la variable de default.json
 
 const db = config.get("mongoURI"); //para obtener el valor del default.json
@@ -11,10 +12,11 @@ const connectDB = async () => {
   // Para conectar con mongoDB (para llamar en server.js)
   try {
     // si tenemos un error que no podemos conectar, usamos este block cuando usamos async/await
-    await mongoose.connect(db, {
+    await mongoose.connect(db,{
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false
     }); // lo utilizamos para quitar el warning "deprecationWarning", ++.
     console.log("MongoDB Connected...");
   } catch (err) {
