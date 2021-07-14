@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const ProfileSchema = new mongoose.Schema({
-  user: {
+  // referencia al user model, ya que cada perfil debe estar asociado con el usuario :
+    user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
   },
