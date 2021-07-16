@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require ('express-validator/check');
+const { check, validationResult } = require ('express-validator');
 const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
@@ -190,7 +190,7 @@ router.put('/unlike/:id', auth, checkObjectId('id'), async (req, res) => {
   // @route    DELETE api/posts/comment/:id/:comment_id
 // @desc     Delete comment
 // @access   Private
-router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
+router.delete('/comment/:id/:comment_id', auth, async (req, res) => { 
     try {
       const post = await Post.findById(req.params.id);
   
