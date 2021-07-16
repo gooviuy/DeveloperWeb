@@ -4,6 +4,8 @@ const config = require("config");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
+const axios = require('axios');
+const request = require("request")
 const checkObjectId = require("../../middleware/checkObjectId");
 // bring in normalize to give us a proper url, regardless of what user entered
 const normalize = require("normalize-url");
@@ -289,4 +291,5 @@ router.get('/github/:username', async (req, res) => {
       return res.status(404).json({ msg: 'No Github profile found' });
     }
   });
+  
 module.exports = router;
