@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require ('express-validator/check');
-const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth');
+
+const Post = require('../../models/Post');
+const User = require('../../models/User');
+const checkObjectId = require('../../middleware/checkObjectId');
 
 // add @route  GET api/Post /// POST api/post
 //@description Test route /// Create a post
